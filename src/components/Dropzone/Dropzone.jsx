@@ -2,11 +2,34 @@ import s from "./Dropzone.module.scss";
 import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import Button from "../Button/Button";
+import useStore from "../../utils/store";
+import { fetchMetadata } from "../../utils/utils";
+
 
 const Dropzone = () => {
+
+  const { tracks, setTracks } = useStore();
+
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     // TODO : Passer le mp3 au store
+
+
+    const tracksArray = [];
+   
+
+    acceptedFiles.forEach((file, i) => {
+      const path = URL.createObjectURL(file);
+
+      const _track = {
+        name: file.name,
+        path: path,
+        id: tracks.lenght + i
+      };
+
+      tracksArray.push(_track);
+    })
+    fetchMetadata(tracksArray, tracks, setTracks );
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
