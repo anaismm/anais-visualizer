@@ -5,5 +5,10 @@ import glslify from "rollup-plugin-glslify";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), glslify()],
-  base: '/anais-visualizer/',
+  base: "/anais-visualizer",
+  resolve: {
+    alias: {
+      "@assets": "/src/assets",
+    },
+  },
 });

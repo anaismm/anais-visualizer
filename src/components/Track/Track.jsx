@@ -4,9 +4,9 @@ import s from "./Track.module.scss";
 import useStore from "../../utils/store"; 
 import { useState } from "react";
 
-import addMusic from "/images/add-music.png";
-import pauseIcon from "/images/pause-icon.png"
-import playIcon from "/images/play-icon.png"
+import addMusic from "@assets/images/add-music.png";
+import pauseIcon from "@assets/images/pause-icon.png"
+import playIcon from "@assets/images/play-icon.png"
 
 const Track = ({ title, cover, src, duration, artists, index, path, preview, origin }) => {
   const { currentTrackSrc, setCurrentTrackSrc, tracks, addTrack, isPlaying, setIsPlaying } = useStore();
