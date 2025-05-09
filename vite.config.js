@@ -5,4 +5,5 @@ import glslify from "rollup-plugin-glslify";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), glslify()],
+  base: '/anais-visualizer/',
 });
