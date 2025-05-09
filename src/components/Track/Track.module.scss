@@ -11,12 +11,22 @@
     background-color: rgba(white, 0.1);
   }
 
+  &.active {
+    background-color: rgba(white, 0.6);
+  }
+  
+
   .order {
-    width: 10%;
+    width: 2%;
+  }
+
+  .artistName {
+    font-size: 0.8rem;
+    color: gray;
   }
 
   .title {
-    width: 50%;
+    width: 40%;
     display: flex;
     gap: 12px;
 
@@ -39,10 +49,35 @@
         width: 300px;
       }
 
-      .artistName {
-        font-size: 0.8rem;
-        color: gray;
-      }
+      
     }
   }
+
+  .playPauseButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    width: 10%;
+  }
+
+  .playPauseIcon {
+    width: 30px;  
+    height: 30px;
+    object-fit: cover;
+  }
+
+  .addButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+
+    .addIcon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+
 }

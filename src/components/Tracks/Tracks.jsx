@@ -6,13 +6,17 @@ import { fetchMetadata } from "../../utils/utils";
 import TRACKS from "../../utils/TRACKS";
 
 import fetchJsonp from "fetch-jsonp";
+import audioController from "../../utils/AudioController";
 
 import s from "./Tracks.module.scss";
 
 const Tracks = () => {
-  // permet d'alterner entre true et false pour afficher / cacher le composant
-  const [showTracks, setShowTracks] = useState(false);
-  const { tracks, setTracks } = useStore();
+  const { tracks, setTracks, showTracks, setShowTracks } = useStore();
+  const [searchInput, setSearchInput] = useState("");
+  // const { addedTracks } = useStore(); 
+  const addedTracks = useStore((state) => state.addedTracks);
+
+
 
   // écouter la variable tracks qui vient du store
   useEffect(() => {
@@ -21,11 +25,6 @@ const Tracks = () => {
     }
   }, [tracks]);
 
-  // TODO : Slider (infini ou non) pour sélectionner les tracks
-
-  // TODO : Fonction de tri / filtre sur les tracks, par nom, durée...
-
-  // TODO : Récupérer les tracks du store
 
   useEffect(() => {
     fetchMetadata(TRACKS, tracks, setTracks);
@@ -41,30 +40,61 @@ const Tracks = () => {
     }
   };
 
+
+
   const getSongs = async (userInput) => {
     let response = await fetchJsonp(
       `https://api.deezer.com/search?q=${userInput}&output=jsonp`
     );
-
+  
     if (response.ok) {
       response = await response.json();
-
-      // récupérer le tableau de tracks du store existant
-      const _tracks = [...tracks];
-
-      // pour chaque track renvoyée par l'API
-      response.data.forEach((result) => {
-        _tracks.push(result);
-      });
-
-      // màj le store
-      setTracks(_tracks);
-
-      console.log(_tracks);
-    } else {
-      // erreurs
+  
+      // const newDeezerTracks = response.data;
+      const newDeezerTracks = response.data.map((track) => ({
+        ...track,
+        origin: "search",
+      }));
+  
+      // Garder seulement les musiques locales (celles qui ont un "path")
+      const localTracks = tracks.filter((track) => track.path);
+  
+      // Mettre à jour uniquement avec les locales + nouvelles de Deezer
+      setTracks([...localTracks, ...newDeezerTracks]);
     }
   };
+  
+
+
+  const resetSearch = () => {
+    setSearchInput(""); // Réinitialiser l'input
+  
+    const currentSrc = audioController.getCurrentSrc(); // Source actuelle
+  
+    // Est-ce que le morceau actuel vient de la liste TRACKS (locale)
+    const isPlayingFromTracks = TRACKS.some((track) => track.path === currentSrc);
+  
+    // Arrêter la musique si ce n’est pas une piste locale
+    if (!isPlayingFromTracks) {
+      audioController.stop(); // 👈 Maintenant cette méthode fonctionne
+      useStore.getState().setCurrentTrackSrc(null); // 👈 reset dans le store
+      useStore.getState().setIsPlaying(false);
+    }
+  
+    // Mettre à jour les pistes locales + celles ajoutées à la main
+    fetchMetadata(TRACKS, [], (localTracks) => {
+      const mergedTracks = [
+        ...localTracks.filter((track) => track.preview || track.path),
+        ...addedTracks.filter((track) => track.preview || track.path),
+      ];
+  
+      setTracks(mergedTracks);
+    });
+  };
+  
+  
+  
+  
 
   return (
     <>
@@ -84,28 +114,54 @@ const Tracks = () => {
           <div className={s.header}>
             <span className={s.order}>#</span>
             <span className={s.title}>Titre</span>
+            {/* <span className={s.artists}>Artistes</span> */}
             <span className={s.duration}>Durée</span>
           </div>
 
-          {tracks.map((track, i) => (
-            <Track
-              key={track.title + i}
-              title={track.title}
-              duration={track.duration}
-              cover={track.album.cover_xl}
-              // artists={track.artists}
-              src={track.preview}
-              index={i}
-            />
-          ))}
+          {tracks.map((track, i) => {
+            // Vérification si track.preview existe, sinon utiliser track.path
+            const validSrc = track.preview || track.path;
+
+            if (!validSrc) {
+              console.warn(`Aucune source valide pour le morceau: ${track.title}`);
+              return null; // Si aucune source valide, on ne rend pas ce morceau
+            }
+
+            return (
+              <Track
+                key={track.title + i}
+                title={track.title}
+                duration={track.duration}
+                cover={track.album?.cover_xl || track.cover}
+                src={validSrc}  
+                path={track.path}
+                preview={track.preview || null}
+                index={i}
+                artists={track.artist ? [track.artist.name] : track.artists}
+                origin={track.origin}
+              />
+            );
+          })}
+
         </div>
 
-        <input
-          type="text"
-          placeholder="Chercher un artiste"
-          className={s.searchInput}
-          onKeyDown={onKeyDown}
-        />
+          <div className={s.searchContainer}>
+            <input
+              type="text"
+              placeholder="Chercher un artiste"
+              className={s.searchInput}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13 && searchInput !== "") {
+                  getSongs(searchInput);
+                }
+              }}
+            />
+            <button className={s.resetButton} onClick={resetSearch}>
+              Réinitialiser
+            </button>
+        </div>
       </section>
     </>
   );

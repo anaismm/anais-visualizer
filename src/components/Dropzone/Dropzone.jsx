@@ -22,6 +22,7 @@ const Dropzone = () => {
           name: file.name,
           path: path,
           id: tracks.length + i,
+          origin: "local",
         };
 
         tracksArray.push(_track);

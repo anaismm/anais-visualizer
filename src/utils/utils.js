@@ -46,6 +46,7 @@ export const fetchMetadata = async (TRACKS, tracks, setTracks) => {
                       title: album || "Unknown Album",
                     },
                     preview: track.path,
+                    origin: track.path ? "local" : "search",
                   });
                 },
                 onError: (error) => {
@@ -64,6 +65,7 @@ export const fetchMetadata = async (TRACKS, tracks, setTracks) => {
                       title: album || "Unknown Album",
                     },
                     preview: track.path,
+                    origin: track.path ? "local" : "search",
                   });
                 },
               });

@@ -47,7 +47,7 @@ class Scene {
   setupGUI() {
     this.gui = new GUI();
 
-    this.bloomFolder = this.gui.addFolder("Bloom");
+    this.bloomFolder = this.gui.addFolder("Bloom").close();
     this.bloomFolder
       .add(this.bloomParams, "threshold", 0, 1)
       .onChange((value) => {

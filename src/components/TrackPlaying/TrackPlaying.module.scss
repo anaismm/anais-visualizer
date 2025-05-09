@@ -1,0 +1,114 @@
+.trackPlaying {
+  position: fixed;
+  bottom: 100px;
+  left: 20px;
+  background: rgba(30, 30, 30, 0.9);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  width: 250px; 
+  // max-width: 100vw;
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+
+  .details {
+    text-align: center;
+    display: flex ;
+    flex-direction: column;
+    width: 100%;
+
+    .title {
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .artist {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 4px;
+      word-break: break-word;
+    }
+  }
+  .controlsRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .loopButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+   
+
+    .loopIcon {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+
+  .controlsButton {
+    display: flex;
+    gap: 0.3rem;
+    flex: 1;  
+    align-items: center;
+    justify-content: start;
+
+    
+
+    .prevButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      .prevMusic {
+        transform: rotate(180deg);
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .nextButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+
+      .nextMusic {
+        width: 18px;
+        height: 18px;
+      }
+
+    }
+
+    .playPauseButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .playPauseIcon {
+      width: 30px;  
+      height: 30px;
+      object-fit: cover;
+    }
+
+  }
+
+  
+}

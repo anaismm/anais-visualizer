@@ -2,7 +2,12 @@ import gsap from "gsap";
 import detect from "bpm-detective";
 
 class AudioController {
-  constructor() {}
+  constructor() {
+    this.isPlaying = false; // état de lecture
+    this.currentSrc = null; // source du morceau en cours de lecture
+    this.isLooping = false;
+   
+  }
 
   setup() {
     this.ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -32,6 +37,16 @@ class AudioController {
       await this.detectBPM();
       // console.log(`The BPM is: ${bpm}`);
     });
+
+
+    this.audio.addEventListener("ended", () => {
+      if (this.isLooping) {
+        this.audio.currentTime = 0;
+        this.audio.play();
+      } else if (typeof this.onTrackEnd === "function") {
+        this.onTrackEnd(); // Appelle la fonction définie depuis React
+      }
+    });
   }
 
   detectBPM = async () => {
@@ -51,10 +66,58 @@ class AudioController {
     // return bpm;
   };
 
-  play = (src) => {
-    this.audio.src = src;
+  
+
+  togglePlayPause(src) {
+    if (this.currentSrc === src) {
+      // Même morceau qu'avant
+      if (this.audio.paused) {
+        this.audio.play();
+      } else {
+        this.audio.pause();
+      }
+    } else {
+      // Nouveau morceau
+      this.audio.src = src;
+      this.currentSrc = src;
+      this.audio.play();
+    }
+  }
+
+  play(src) {
+    if (this.currentSrc !== src) {
+      this.audio.src = src;
+      this.currentSrc = src;
+    }
     this.audio.play();
-  };
+  }
+
+  pause() {
+    this.audio.pause();
+  }
+
+  stop() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.isPlaying = false;
+  }  
+
+  toggleLoop() {
+    this.audio.loop = !this.audio.loop;
+    this.isLooping = this.audio.loop;
+  }
+
+  getIsPlaying() {
+    return !this.audio.paused;
+  }
+  
+  getCurrentSrc = () => this.currentSrc;
+  
+
+  setOnTrackEnd(callback) {
+    this.onTrackEnd = callback;
+  }
+  
 
   tick = () => {
     this.analyserNode.getByteFrequencyData(this.fdata);
