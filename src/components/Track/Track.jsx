@@ -46,19 +46,14 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
 
   const isActive = currentTrackSrc === src;
   const isPlayingThisTrack = isActive && isPlaying;
-  // const isPlaying = audioController.getIsPlaying() && isActive;
-  // const alreadyInList = tracks.some((track) => track.src === src);
-  // const alreadyInList = tracks.some((track) => track.path === src || track.preview === src);
   const alreadyInList = tracks.some((track) => track.src === src);
-  // const isFromSearch = origin === "search";
-  // const shouldShowAddButton = isFromSearch && !alreadyInList;
 
   const shouldShowAddButton = origin === "search" && !alreadyInList;
 
   const handleAddClick = (e) => {
     e.stopPropagation();
     
-    // Utiliser src comme la source correcte ici
+    
     const newTrack = {
       title,
       artists,

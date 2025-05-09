@@ -13,12 +13,9 @@ import s from "./Tracks.module.scss";
 const Tracks = () => {
   const { tracks, setTracks, showTracks, setShowTracks } = useStore();
   const [searchInput, setSearchInput] = useState("");
-  // const { addedTracks } = useStore(); 
   const addedTracks = useStore((state) => state.addedTracks);
 
 
-
-  // écouter la variable tracks qui vient du store
   useEffect(() => {
     if (tracks.length > TRACKS.length) {
       setShowTracks(true);
@@ -32,10 +29,7 @@ const Tracks = () => {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13 && e.target.value !== "") {
-      // l'utilisateur a appuyé sur sa touche entrée
       const userInput = e.target.value;
-
-      // appeler la fonction
       getSongs(userInput);
     }
   };

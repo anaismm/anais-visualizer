@@ -3,12 +3,16 @@ import useStore from "../../utils/store";
 import s from "./TrackPlaying.module.scss";
 import audioController from "../../utils/AudioController";  
 
+import loopOn from "@assets/images/loop-on-icon.svg";
+import loopOff from "@assets/images/loop-off-icon.png";
+import pauseIcon from "@assets/images/pause-icon.png";
+import playIcon from "@assets/images/play-icon.png";
+import nextIcon from "@assets/images/next-icon.svg";
+
 const TrackPlaying = () => {
   const { currentTrackSrc, setCurrentTrackSrc, tracks, showTracks , isPlaying, setIsPlaying } = useStore();
   const [isLooping, setIsLooping] = useState(audioController.isLooping);
 
-  // const [isPlaying, setIsPlaying] = useState(false); 
-  
   const currentTrack = tracks.find((t) => t.preview === currentTrackSrc || t.path === currentTrackSrc);
   
   const togglePlayPause = () => {
@@ -22,7 +26,6 @@ const TrackPlaying = () => {
     audioController.toggleLoop();
     setIsLooping(audioController.isLooping); 
   };
-  
   
 
   // Previous tracks
@@ -70,47 +73,11 @@ const TrackPlaying = () => {
       <img src={currentTrack.album?.cover_xl || currentTrack.cover} alt="Cover" className={s.cover} />
      
      
-        {/* <button onClick={toggleLoop} className={s.loopButton}>
-          <img
-            src={isLooping ? "/images/loop-on-icon.svg" : "/images/loop-off-icon.png"}
-            alt={isLooping ? "Désactiver la boucle" : "Activer la boucle"}
-            className={s.loopIcon}
-          />
-        </button>   */}
-        {/* Boutons controles */}
-        {/* <div className={s.controlsButton}> 
-
-        <button className={s.prevButton} onClick={goToPreviousTrack}>
-          <img
-            src="/images/next-icon.svg"
-            alt="Previous"
-            className={s.prevMusic}
-          />
-        </button> */}
-
-          {/* Bouton Play/Pause */}
-          {/* <button className={s.playPauseButton} onClick={togglePlayPause}>
-            <img
-              src={isPlaying ? "/images/pause-icon.png" : "/images/play-icon.png"}  // Change l'icône en fonction de l'état
-              alt={isPlaying ? "Pause" : "Play"}
-              className={s.playPauseIcon}
-            />
-          </button>
-        
-          <button className={s.nextButton} onClick={goToNextTrack}>
-            <img
-              src="/images/next-icon.svg"
-              alt="Next"
-              className={s.nextMusic}
-            />
-          </button>
-        </div> */}
-    
 
     <div className={s.controlsRow}>
   <button onClick={toggleLoop} className={s.loopButton}>
     <img
-      src={isLooping ? "/images/loop-on-icon.svg" : "/images/loop-off-icon.png"}
+      src={isLooping ? loopOn : loopOff}
       alt={isLooping ? "Désactiver la boucle" : "Activer la boucle"}
       className={s.loopIcon}
     />
@@ -119,7 +86,7 @@ const TrackPlaying = () => {
       <div className={s.controlsButton}> 
         <button className={s.prevButton} onClick={goToPreviousTrack}>
           <img
-            src="/images/next-icon.svg"
+            src={nextIcon}
             alt="Previous"
             className={s.prevMusic}
           />
@@ -127,7 +94,7 @@ const TrackPlaying = () => {
 
         <button className={s.playPauseButton} onClick={togglePlayPause}>
           <img
-            src={isPlaying ? "/images/pause-icon.png" : "/images/play-icon.png"}
+            src={isPlaying ? pauseIcon : playIcon}
             alt={isPlaying ? "Pause" : "Play"}
             className={s.playPauseIcon}
           />
@@ -135,7 +102,7 @@ const TrackPlaying = () => {
 
         <button className={s.nextButton} onClick={goToNextTrack}>
           <img
-            src="/images/next-icon.svg"
+            src={nextIcon}
             alt="Next"
             className={s.nextMusic}
           />
