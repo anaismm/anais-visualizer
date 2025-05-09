@@ -4,6 +4,10 @@ import s from "./Track.module.scss";
 import useStore from "../../utils/store"; 
 import { useState } from "react";
 
+import addMusic from "/images/add-music.png";
+import pauseIcon from "/images/pause-icon.png"
+import playIcon from "/images/play-icon.png"
+
 const Track = ({ title, cover, src, duration, artists, index, path, preview, origin }) => {
   const { currentTrackSrc, setCurrentTrackSrc, tracks, addTrack, isPlaying, setIsPlaying } = useStore();
 
@@ -83,7 +87,7 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
         }}
       >
         <img
-          src={isPlayingThisTrack ? "/images/pause-icon.png" : "/images/play-icon.png"}
+          src={isPlayingThisTrack ? pauseIcon : playIcon}
           alt={isPlayingThisTrack ? "Pause" : "Play"}
           className={s.playPauseIcon}
         />
@@ -99,8 +103,8 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
       {shouldShowAddButton && (
       <button className={s.addButton} onClick={handleAddClick} title="Ajouter cette musique à ma playlist">
         <img
-          src={"/images/add-music.png"}
-          alt={ "Ajouter la musique à ma playlist"}
+          src={addMusic}
+          alt="Ajouter la musique à ma playlist"
           className={s.addIcon}
         />
       </button>
