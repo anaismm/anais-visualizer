@@ -44,16 +44,13 @@ const Tracks = () => {
     if (response.ok) {
       response = await response.json();
   
-      // const newDeezerTracks = response.data;
       const newDeezerTracks = response.data.map((track) => ({
         ...track,
         origin: "search",
       }));
   
-      // Garder seulement les musiques locales (celles qui ont un "path")
       const localTracks = tracks.filter((track) => track.path);
-  
-      // Mettre à jour uniquement avec les locales + nouvelles de Deezer
+
       setTracks([...localTracks, ...newDeezerTracks]);
     }
   };
@@ -61,21 +58,19 @@ const Tracks = () => {
 
 
   const resetSearch = () => {
-    setSearchInput(""); // Réinitialiser l'input
+    setSearchInput(""); 
   
-    const currentSrc = audioController.getCurrentSrc(); // Source actuelle
+    const currentSrc = audioController.getCurrentSrc(); 
   
-    // Est-ce que le morceau actuel vient de la liste TRACKS (locale)
     const isPlayingFromTracks = TRACKS.some((track) => track.path === currentSrc);
   
-    // Arrêter la musique si ce n’est pas une piste locale
+   
     if (!isPlayingFromTracks) {
-      audioController.stop(); // 👈 Maintenant cette méthode fonctionne
-      useStore.getState().setCurrentTrackSrc(null); // 👈 reset dans le store
+      audioController.stop(); 
+      useStore.getState().setCurrentTrackSrc(null); 
       useStore.getState().setIsPlaying(false);
     }
   
-    // Mettre à jour les pistes locales + celles ajoutées à la main
     fetchMetadata(TRACKS, [], (localTracks) => {
       const mergedTracks = [
         ...localTracks.filter((track) => track.preview || track.path),
@@ -85,10 +80,11 @@ const Tracks = () => {
       setTracks(mergedTracks);
     });
   };
+
+
   
-  
-  
-  
+ 
+
 
   return (
     <>
@@ -108,17 +104,15 @@ const Tracks = () => {
           <div className={s.header}>
             <span className={s.order}>#</span>
             <span className={s.title}>Titre</span>
-            {/* <span className={s.artists}>Artistes</span> */}
             <span className={s.duration}>Durée</span>
           </div>
 
           {tracks.map((track, i) => {
-            // Vérification si track.preview existe, sinon utiliser track.path
             const validSrc = track.preview || track.path;
 
             if (!validSrc) {
               console.warn(`Aucune source valide pour le morceau: ${track.title}`);
-              return null; // Si aucune source valide, on ne rend pas ce morceau
+              return null; 
             }
 
             return (

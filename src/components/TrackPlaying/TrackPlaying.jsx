@@ -28,7 +28,7 @@ const TrackPlaying = () => {
   };
   
 
-  // Previous tracks
+  // Previous track
   const goToPreviousTrack = () => {
     const currentIndex = tracks.findIndex(
       (t) => t.preview === currentTrackSrc || t.path === currentTrackSrc
@@ -43,7 +43,7 @@ const TrackPlaying = () => {
   };
   
   
-  // Next tracks
+  // Next track
   const goToNextTrack = () => {
     const currentIndex = tracks.findIndex(
       (t) => t.preview === currentTrackSrc || t.path === currentTrackSrc

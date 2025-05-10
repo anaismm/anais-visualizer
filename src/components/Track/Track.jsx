@@ -2,18 +2,14 @@ import audioController from "../../utils/AudioController";
 import scene from "../../webgl/Scene";
 import s from "./Track.module.scss";
 import useStore from "../../utils/store"; 
-import { useState } from "react";
 
 import addMusic from "@assets/images/add-music.png";
 import pauseIcon from "@assets/images/pause-icon.png"
 import playIcon from "@assets/images/play-icon.png"
 
-const Track = ({ title, cover, src, duration, artists, index, path, preview, origin }) => {
+// eslint-disable-next-line react/prop-types
+const Track = ({ title, cover, src, duration, artists, index, origin }) => {
   const { currentTrackSrc, setCurrentTrackSrc, tracks, addTrack, isPlaying, setIsPlaying } = useStore();
-
-  
-  console.log("track origin", origin);
-
 
   const getSeconds = () => {
     const minutes = Math.floor(duration / 60);
@@ -42,7 +38,6 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
   };
   
   
-  
 
   const isActive = currentTrackSrc === src;
   const isPlayingThisTrack = isActive && isPlaying;
@@ -53,7 +48,6 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
   const handleAddClick = (e) => {
     e.stopPropagation();
     
-    
     const newTrack = {
       title,
       artists,
@@ -63,8 +57,7 @@ const Track = ({ title, cover, src, duration, artists, index, path, preview, ori
       path: src,   
       origin: "search",
     };
-  
-    console.log("Ajout de track avec src:", src);
+    
     addTrack(newTrack);
   };
   

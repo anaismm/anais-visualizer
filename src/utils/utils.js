@@ -4,10 +4,10 @@ export const fetchMetadata = async (TRACKS, tracks, setTracks) => {
   const promises = TRACKS.map(
     (track) =>
       new Promise((resolve, reject) => {
-        // get duration
+      
         const audio = new Audio(track.path);
         audio.addEventListener("loadedmetadata", () => {
-          // Fetch the MP3 file as a Blob
+          
           fetch(track.path)
             .then((response) => {
               if (!response.ok) {
@@ -16,11 +16,11 @@ export const fetchMetadata = async (TRACKS, tracks, setTracks) => {
               return response.blob();
             })
             .then((blob) => {
-              // Read metadata from the Blob
+              
               jsmediatags.read(blob, {
                 onSuccess: (tag) => {
                   const { title, artist, album, picture } = tag.tags;
-                  // Extract cover image if it exists
+                  
                   let cover = "https://placehold.co/600x400";
                   if (picture) {
                     const base64String = btoa(
@@ -80,18 +80,16 @@ export const fetchMetadata = async (TRACKS, tracks, setTracks) => {
   try {
     const results = await Promise.all(promises);
 
-    // récupérer le tableau de tracks du store existant
+    
     const _tracks = [...tracks];
 
-    // pour chaque track processed par la librairie pour récupérer les metadata
     results.forEach((result) => {
       _tracks.push(result);
     });
 
-    // màj le store
+   
     setTracks(_tracks);
 
-    // _tracks.push(results)
   } catch (error) {
     console.error("Error fetching metadata:", error);
   }

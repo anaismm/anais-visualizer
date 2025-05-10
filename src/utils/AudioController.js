@@ -3,8 +3,8 @@ import detect from "bpm-detective";
 
 class AudioController {
   constructor() {
-    this.isPlaying = false; // état de lecture
-    this.currentSrc = null; // source du morceau en cours de lecture
+    this.isPlaying = false; 
+    this.currentSrc = null; 
     this.isLooping = false;
    
   }
@@ -16,7 +16,6 @@ class AudioController {
     this.audio.crossOrigin = "anonymous";
     this.bpm = null;
 
-    // this.audio.src = danceTheNight;
     this.audio.volume = 0.1;
 
     this.audioSource = this.ctx.createMediaElementSource(this.audio);
@@ -35,7 +34,6 @@ class AudioController {
 
     this.audio.addEventListener("loadeddata", async () => {
       await this.detectBPM();
-      // console.log(`The BPM is: ${bpm}`);
     });
 
 
@@ -44,40 +42,39 @@ class AudioController {
         this.audio.currentTime = 0;
         this.audio.play();
       } else if (typeof this.onTrackEnd === "function") {
-        this.onTrackEnd(); // Appelle la fonction définie depuis React
+        this.onTrackEnd();
       }
     });
   }
 
   detectBPM = async () => {
-    // Create an offline audio context to process the data
     const offlineCtx = new OfflineAudioContext(
       1,
       this.audio.duration * this.ctx.sampleRate,
       this.ctx.sampleRate
     );
-    // Decode the current audio data
-    const response = await fetch(this.audio.src); // Fetch the audio file
+    
+    const response = await fetch(this.audio.src); 
     const buffer = await response.arrayBuffer();
     const audioBuffer = await offlineCtx.decodeAudioData(buffer);
-    // Use bpm-detective to detect the BPM
+
     this.bpm = detect(audioBuffer);
     console.log(`Detected BPM: ${this.bpm}`);
-    // return bpm;
+    
   };
 
   
 
   togglePlayPause(src) {
     if (this.currentSrc === src) {
-      // Même morceau qu'avant
+    
       if (this.audio.paused) {
         this.audio.play();
       } else {
         this.audio.pause();
       }
     } else {
-      // Nouveau morceau
+      
       this.audio.src = src;
       this.currentSrc = src;
       this.audio.play();

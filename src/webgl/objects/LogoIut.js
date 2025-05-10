@@ -2,12 +2,17 @@ import * as THREE from "three";
 import audioController from "../../utils/AudioController";
 import scene from "../Scene";
 
+import texture1 from "@assets/textures/matcap.png";
+import texture2 from "@assets/textures/matcap-2.png";
+import modelUrl from "@assets/models/logo-iut.glb?url";
+
+
 export default class LogoIut {
   constructor() {
     this.group = null;
 
-    this.matcap = scene.textureLoader.load("/textures/matcap.png");
-    this.matcap2 = scene.textureLoader.load("/textures/matcap-2.png");
+    this.matcap = scene.textureLoader.load(texture1);
+    this.matcap2 = scene.textureLoader.load(texture2);
 
     this.material = new THREE.MeshMatcapMaterial({
       matcap: this.matcap, // passer la texture matcap au material
@@ -26,7 +31,7 @@ export default class LogoIut {
 
     this.sphere = null;
 
-    scene.gltfLoader.load("/models/logo-iut.glb", (gltf) => {
+    scene.gltfLoader.load(modelUrl, (gltf) => {
       this.group = gltf.scene;
 
       console.log(gltf.scene);

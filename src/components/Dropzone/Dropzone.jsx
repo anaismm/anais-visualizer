@@ -7,17 +7,16 @@ import { fetchMetadata } from "../../utils/utils";
 import Button from "../Button/Button";
 
 const Dropzone = () => {
-  const { tracks, setTracks } = useStore();
+  const { tracks, setTracks} = useStore();
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      // Créer un tableau temporaire
+  
       const tracksArray = [];
 
       acceptedFiles.forEach((file, i) => {
         const path = URL.createObjectURL(file);
 
-        //   // Créer un objet avec la structure similaire à celle de TRACKS dans TRACKS.js
         const _track = {
           name: file.name,
           path: path,
@@ -29,6 +28,8 @@ const Dropzone = () => {
       });
 
       fetchMetadata(tracksArray, tracks, setTracks);
+      
+  
     },
     [tracks]
   );
@@ -52,15 +53,6 @@ const Dropzone = () => {
       `}
     >
       <input {...getInputProps()} />
-
-      {/* {isDragActive && (
-        // l'utilisateur est en train de drag and drop, afficher la dropzone
-        <div className={s.outer}>
-          <div className={s.inner}>
-            <p>Déposez vos fichiers dans cette zone</p>
-          </div>
-        </div>
-      )} */}
 
       <div className={s.import}>
         <p>Importez vos fichiers .mp3 en cliquant sur le bouton</p>
